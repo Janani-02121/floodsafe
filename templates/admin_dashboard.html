@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}FloodSafe - Admin Dashboard{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <div>
+            <span>Logged in as <strong>{{ username }}</strong></span>
+            <a href="{{ url_for('admin_logout') }}" class="btn-secondary">Logout</a>
+        </div>
+    </div>
+
+    <div id="adminMessage" class="admin-message" style="display:none;"></div>
+
+    <!-- ================= LOCATIONS ================= -->
+    <div class="dashboard-block">
+        <h2>Locations</h2>
+        <table class="admin-table" id="locationsTable">
+            <thead>
+                <tr><th>ID</th><th>Name</th><th>Latitude</th><th>Longitude</th><th>Description</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                {% for loc in locations %}
+                <tr data-id="{{ loc.id }}">
+                    <td>{{ loc.id }}</td>
+                    <td class="f-name">{{ loc.name }}</td>
+                    <td class="f-lat">{{ loc.latitude }}</td>
+                    <td class="f-lng">{{ loc.longitude }}</td>
+                    <td class="f-desc">{{ loc.description or "" }}</td>
+                    <td>
+                        <button class="btn-small edit-location">Edit</button>
+                        <button class="btn-small btn-danger delete-location">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Add New Location</h3>
+        <form id="addLocationForm" class="inline-form">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="number" step="any" name="latitude" placeholder="Latitude" required>
+            <input type="number" step="any" name="longitude" placeholder="Longitude" required>
+            <input type="text" name="description" placeholder="Description">
+            <button type="submit" class="btn-primary">Add Location</button>
+        </form>
+    </div>
+
+    <!-- ================= SHELTERS ================= -->
+    <div class="dashboard-block">
+        <h2>Shelters</h2>
+        <table class="admin-table" id="sheltersTable">
+            <thead>
+                <tr><th>ID</th><th>Name</th><th>Latitude</th><th>Longitude</th><th>Capacity</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                {% for s in shelters %}
+                <tr data-id="{{ s.id }}">
+                    <td>{{ s.id }}</td>
+                    <td class="f-name">{{ s.name }}</td>
+                    <td class="f-lat">{{ s.latitude }}</td>
+                    <td class="f-lng">{{ s.longitude }}</td>
+                    <td class="f-capacity">{{ s.capacity }}</td>
+                    <td>
+                        <button class="btn-small edit-shelter">Edit</button>
+                        <button class="btn-small btn-danger delete-shelter">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Add New Shelter</h3>
+        <form id="addShelterForm" class="inline-form">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="number" step="any" name="latitude" placeholder="Latitude" required>
+            <input type="number" step="any" name="longitude" placeholder="Longitude" required>
+            <input type="number" name="capacity" placeholder="Capacity" value="100">
+            <button type="submit" class="btn-primary">Add Shelter</button>
+        </form>
+    </div>
+
+    <!-- ================= ROADS ================= -->
+    <div class="dashboard-block">
+        <h2>Roads</h2>
+        <table class="admin-table" id="roadsTable">
+            <thead>
+                <tr>
+                    <th>ID</th><th>From Type</th><th>From ID</th><th>To Type</th><th>To ID</th>
+                    <th>Distance (km)</th><th>Flood Status</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in roads %}
+                <tr data-id="{{ r.id }}">
+                    <td>{{ r.id }}</td>
+                    <td class="f-from-type">{{ r.from_type }}</td>
+                    <td class="f-from-id">{{ r.from_id }}</td>
+                    <td class="f-to-type">{{ r.to_type }}</td>
+                    <td class="f-to-id">{{ r.to_id }}</td>
+                    <td class="f-distance">{{ r.distance_km }}</td>
+                    <td>
+                        <select class="status-select flood-status-{{ r.flood_status }}">
+                            <option value="safe" {% if r.flood_status == 'safe' %}selected{% endif %}>Safe</option>
+                            <option value="low" {% if r.flood_status == 'low' %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if r.flood_status == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if r.flood_status == 'high' %}selected{% endif %}>High</option>
+                            <option value="blocked" {% if r.flood_status == 'blocked' %}selected{% endif %}>Blocked</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn-small btn-danger delete-road">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Add New Road</h3>
+        <form id="addRoadForm" class="inline-form">
+            <select name="from_type" required>
+                <option value="location">location</option>
+                <option value="shelter">shelter</option>
+            </select>
+            <input type="number" name="from_id" placeholder="From ID" required>
+            <select name="to_type" required>
+                <option value="location">location</option>
+                <option value="shelter">shelter</option>
+            </select>
+            <input type="number" name="to_id" placeholder="To ID" required>
+            <input type="number" step="any" name="distance_km" placeholder="Distance (km)" required>
+            <select name="flood_status">
+                <option value="safe">safe</option>
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+                <option value="blocked">blocked</option>
+            </select>
+            <button type="submit" class="btn-primary">Add Road</button>
+        </form>
+        <p class="hint-text">
+            Tip: use location/shelter IDs shown in the tables above as From ID / To ID.
+        </p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

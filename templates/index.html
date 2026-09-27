@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}FloodSafe - Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>FloodSafe</h1>
+    <p class="tagline">Smart Flood Evacuation Route Finder</p>
+    <p class="hero-text">
+        FloodSafe helps people find the safest and shortest evacuation route to a nearby
+        shelter during floods. It uses <strong>Dijkstra's Algorithm</strong> to calculate
+        routes while avoiding blocked roads and minimizing flood risk.
+    </p>
+    <a href="{{ url_for('route_finder') }}" class="btn-primary">Find a Safe Route</a>
+</section>
+
+<section class="features">
+    <h2>How It Works</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>📍 Choose Your Location</h3>
+            <p>Select your current location on the interactive map.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🏠 Pick a Shelter</h3>
+            <p>Choose the nearest safe shelter as your destination.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🧮 Dijkstra Calculates</h3>
+            <p>Our own Dijkstra implementation finds the lowest-cost path, avoiding
+               blocked and heavily flooded roads.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🗺️ Get Your Route</h3>
+            <p>View the safest route on the map with distance and estimated time.</p>
+        </div>
+    </div>
+</section>
+
+<section class="legend-section">
+    <h2>Flood Risk Legend</h2>
+    <ul class="legend-list">
+        <li><span class="dot safe"></span> Safe Road (no penalty)</li>
+        <li><span class="dot low"></span> Low Flood Risk (+2 penalty)</li>
+        <li><span class="dot medium"></span> Medium Flood Risk (+5 penalty)</li>
+        <li><span class="dot high"></span> High Flood Risk (+10 penalty)</li>
+        <li><span class="dot blocked"></span> Blocked Road (unusable)</li>
+    </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}FloodSafe - Route Finder{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    #map { height: 520px; width: 100%; border-radius: 8px; margin-top: 15px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="route-finder-section">
+    <h1>Route Finder</h1>
+    <p>Select your start location and destination shelter, then click "Find Safe Route".</p>
+
+    <div class="route-form">
+        <div class="form-group">
+            <label for="startType">Start Point Type</label>
+            <select id="startType">
+                <option value="location">Location</option>
+                <option value="shelter">Shelter</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="startSelect">Start Point</label>
+            <select id="startSelect"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="destType">Destination Type</label>
+            <select id="destType">
+                <option value="shelter" selected>Shelter</option>
+                <option value="location">Location</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="destSelect">Destination</label>
+            <select id="destSelect"></select>
+        </div>
+
+        <button id="findRouteBtn" class="btn-primary">Find Safe Route</button>
+    </div>
+
+    <div id="routeResult" class="route-result" style="display:none;"></div>
+    <div id="routeError" class="route-error" style="display:none;"></div>
+
+    <div id="map"></div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/route.js') }}"></script>
+{% endblock %}
